@@ -15,7 +15,34 @@ const getPostTitle = (id) => {
   return promessa;
 };
 
+const getPost = (id) => {
+  const promessa = new Promise((resolve, reject) => {
+    let post;
+    const fetchAuthor = () => {
+      fetch(`https://dummyjson.com/users/${post.userId}`)
+        .then((res) => res.json())
+        .then((res) => {
+          post.user = res;
+          resolve(post);
+        })
+        .catch(reject);
+    };
+    fetch(`https://dummyjson.com/posts/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        post = res;
+        fetchAuthor();
+      })
+      .catch(reject);
+  });
+  return promessa;
+};
+
 getPostTitle(2)
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err));
+
+getPost(2)
   .then((res) => console.log(res))
   .catch((err) => console.error(err));
 
@@ -28,9 +55,9 @@ const lanciaDado = () => {
   const promessa = new Promise((resolve, reject) => {
     let numero;
     const inceppo = Math.round(Math.random() * 100 + 1);
-    console.log("probabilita inceppo: " + inceppo);
 
     setTimeout(() => {
+      console.log("probabilita inceppo: " + inceppo);
       if (inceppo < 20) {
         reject("Funzione inceppata!");
       } else {
