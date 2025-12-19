@@ -68,6 +68,33 @@ const lanciaDado = () => {
   });
   return promessa;
 };
-lanciaDado()
-  .then((res) => console.log(res))
-  .catch((err) => console.error(err));
+
+function creaLanciaDado() {
+  let ultimoDado = 0;
+  return (lancioDado = () => {
+    const promessa = new Promise((resolve, reject) => {
+      let numero;
+      const inceppo = Math.round(Math.random() * 100 + 1);
+
+      setTimeout(() => {
+        console.log("cap inceppo: " + inceppo);
+        if (inceppo > 80) {
+          reject("Funzione inceppata!");
+        } else {
+          numero = Math.floor(Math.random() * 2 + 1);
+          resolve(console.log(`Risultato: ${numero}`));
+          numero === ultimoDado
+            ? console.log("MINCHIAZZZZ")
+            : (ultimoDado = numero);
+        }
+      }, 3000);
+    });
+    return promessa;
+  });
+}
+
+const lancio1 = creaLanciaDado();
+lancio1();
+lancio1();
+lancio1();
+lancio1();
