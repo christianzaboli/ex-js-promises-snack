@@ -52,45 +52,39 @@ getPost(2)
 // Modifica la funzione in creaLanciaDado(), che restituisce una closure che memorizza l'ultimo risultato. Se il numero esce due volte di fila, stampa "Incredibile!".
 
 const lanciaDado = () => {
-  const promessa = new Promise((resolve, reject) => {
-    let numero;
-    const inceppo = Math.round(Math.random() * 100 + 1);
+  return new Promise((resolve, reject) => {
+    console.log("Lancio del dado...");
 
     setTimeout(() => {
-      console.log("probabilita inceppo: " + inceppo);
-      if (inceppo < 20) {
-        reject("Funzione inceppata!");
+      if (Math.random() < 0.2) {
+        reject("Dado inceppato!");
       } else {
-        numero = Math.floor(Math.random() * 6 + 1);
+        const numero = Math.floor(Math.random() * 6 + 1);
         resolve("Risultato: " + numero);
       }
     }, 3000);
   });
-  return promessa;
 };
 
 function creaLanciaDado() {
-  let ultimoDado = 0;
-  return (lancioDado = () => {
-    const promessa = new Promise((resolve, reject) => {
-      let numero;
-      const inceppo = Math.round(Math.random() * 100 + 1);
-
+  let ultimoDado = null;
+  return function () {
+    return new Promise((resolve, reject) => {
+      console.log("Lancio del dado...");
       setTimeout(() => {
-        console.log("cap inceppo: " + inceppo);
-        if (inceppo > 80) {
+        if (Math.random() < 0.2) {
+          ultimoDado = null;
           reject("Funzione inceppata!");
         } else {
-          numero = Math.floor(Math.random() * 2 + 1);
-          resolve(console.log(`Risultato: ${numero}`));
+          const numero = Math.floor(Math.random() * 2 + 1);
           numero === ultimoDado
             ? console.log("Incredibile!")
             : (ultimoDado = numero);
+          resolve(console.log(`Risultato: ${numero}`));
         }
       }, 3000);
     });
-    return promessa;
-  });
+  };
 }
 
 const lancio1 = creaLanciaDado();
