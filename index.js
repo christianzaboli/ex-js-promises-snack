@@ -84,7 +84,7 @@ function creaLanciaDado() {
           numero = Math.floor(Math.random() * 2 + 1);
           resolve(console.log(`Risultato: ${numero}`));
           numero === ultimoDado
-            ? console.log("MINCHIAZZZZ")
+            ? console.log("Incredibile!")
             : (ultimoDado = numero);
         }
       }, 3000);
