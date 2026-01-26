@@ -34,6 +34,26 @@ const getPost = (id) => {
   });
   return promessa;
 };
+const getPostAsync = async (id) => {
+  let post;
+  try {
+    const postData = await fetch(`https://dummyjson.com/posts/${id}`).then(
+      (res) => res.json(),
+    );
+    post = postData;
+  } catch (error) {
+    throw new Error("Post non trovato");
+  }
+  try {
+    const userData = await fetch(
+      `https://dummyjson.com/users/${postData.userId}`,
+    ).then((res) => res.json());
+    post.user = userData;
+  } catch (error) {
+    throw new Error("Utente non trovato");
+  }
+  return post;
+};
 
 getPostTitle(2)
   .then((res) => console.log(res))
@@ -42,6 +62,15 @@ getPostTitle(2)
 getPost(2)
   .then((res) => console.log(res))
   .catch((err) => console.error(err));
+
+(async () => {
+  try {
+    const post = await getPostAsync(2);
+    console.log(post);
+  } catch (error) {
+    console.error(error);
+  }
+})();
 
 // 🏆 Snack 2
 // Crea la funzione lanciaDado() che restituisce una Promise che, dopo 3 secondi, genera un numero casuale tra 1 e 6. Tuttavia, nel 20% dei casi, il dado si "incastra" e la Promise va in reject.
