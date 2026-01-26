@@ -9,8 +9,8 @@ const getPostTitle = (id) => {
   const promessa = new Promise((resolve, reject) => {
     fetch(`https://dummyjson.com/posts/${id}`)
       .then((res) => res.json())
-      .then((res) => resolve(res.title))
-      .catch(reject);
+      .then((obj) => resolve(obj.title))
+      .catch(reject("post non trovato"));
   });
   return promessa;
 };
@@ -18,22 +18,19 @@ const getPostTitle = (id) => {
 const getPost = (id) => {
   const promessa = new Promise((resolve, reject) => {
     let post;
-    const fetchAuthor = () => {
-      fetch(`https://dummyjson.com/users/${post.userId}`)
-        .then((res) => res.json())
-        .then((res) => {
-          post.user = res;
-          resolve(post);
-        })
-        .catch(reject);
-    };
     fetch(`https://dummyjson.com/posts/${id}`)
       .then((res) => res.json())
-      .then((res) => {
-        post = res;
-        fetchAuthor();
+      .then((obj) => {
+        post = obj;
+        fetch(`https://dummyjson.com/users/${post.userId}`)
+          .then((res) => res.json())
+          .then((obj) => {
+            post.user = obj;
+            resolve(post);
+          })
+          .catch(reject("id non trovato"));
       })
-      .catch(reject);
+      .catch(reject("post non trovato"));
   });
   return promessa;
 };
